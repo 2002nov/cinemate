@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:test/model/profile.dart';
 import 'package:test/search.dart';
 import 'component/drawer.dart';
 import 'Home.dart';
 import 'component/nav.dart';
 
 class Help extends StatefulWidget {
+  final Map<String, dynamic> info;
+  final Profile profile;
+
+  const Help({
+    Key? key,
+    required this.profile,
+    required this.info,
+  }) : super(key: key);
   @override
   State<Help> createState() => _HelpState();
 }
@@ -14,8 +23,11 @@ class _HelpState extends State<Help> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(),
-      appBar: Bar(),
+      drawer: NavDrawer(profile: widget.profile, info: widget.info),
+      appBar: PreferredSize(
+          preferredSize: Size.fromHeight(kToolbarHeight),
+          child: Bar(profile: widget.profile, info: widget.info),
+        ),
       backgroundColor: Colors.black,
       body: ListView(
         children: [
@@ -54,7 +66,7 @@ class _HelpState extends State<Help> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Home()),
+                        MaterialPageRoute(builder: (context) => Home(profile: widget.profile, info: widget.info)),
                       );
                     },
                     child: Padding(

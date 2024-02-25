@@ -5,11 +5,20 @@ import 'package:test/api/movie_service.dart';
 import 'package:test/component/widget.dart';
 import 'package:test/details/Tv_detail.dart';
 import 'package:test/details/movie_detail.dart';
+import 'package:test/model/profile.dart';
 import 'component/drawer.dart';
 import 'component/nav.dart';
 
 
 class Pop extends StatefulWidget {
+  final Map<String, dynamic> info;
+  final Profile profile;
+
+  const Pop({
+    Key? key,
+    required this.profile,
+    required this.info,
+  }) : super(key: key);
   @override
   State<Pop> createState() => _HomeState();
 }
@@ -18,9 +27,9 @@ class _HomeState extends State<Pop> {
 final MovieService movieService = MovieService();
   late Future<List<dynamic>> popMovies;
   late Future<List<dynamic>> newMovies;
-   late Future<List<dynamic>> popTv;
+  late Future<List<dynamic>> popTv;
     late Future<List<dynamic>> AiringTv;
-     late Future<List<dynamic>> OnairTv;
+    late Future<List<dynamic>> OnairTv;
 
   @override
   void initState() {
@@ -48,10 +57,13 @@ final MovieService movieService = MovieService();
   }
 
   @override
- Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(),
-      appBar: Bar(),
+      drawer: NavDrawer(profile: widget.profile, info: widget.info),
+      appBar: PreferredSize(
+          preferredSize: Size.fromHeight(kToolbarHeight),
+          child: Bar(profile: widget.profile, info: widget.info),
+        ),
       backgroundColor: Colors.black,
       body: SingleChildScrollView(
         child: Column(

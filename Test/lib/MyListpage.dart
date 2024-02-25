@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:test/api/movie_service.dart'; // Import your MovieService or adjust as needed
 import 'package:test/details/movie_detail.dart'; // Import your MovieDetailPage or adjust as needed
+import 'package:test/model/profile.dart';
 import 'component/drawer.dart';
 import 'component/nav.dart';
 import 'component/widget.dart';
 
 class MyListPage extends StatefulWidget {
+  final Map<String, dynamic> info;
+  final Profile profile;
+
+  const MyListPage({
+    Key? key,
+    required this.profile,
+    required this.info,
+  }) : super(key: key);
   @override
   _MyListPageState createState() => _MyListPageState();
 }
@@ -38,8 +47,11 @@ class _MyListPageState extends State<MyListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(),
-      appBar: Bar(),
+      drawer: NavDrawer(profile: widget.profile, info: widget.info),
+      appBar: PreferredSize(
+          preferredSize: Size.fromHeight(kToolbarHeight),
+          child: Bar(profile: widget.profile, info: widget.info),
+        ),
       backgroundColor: Colors.black,
       body: SingleChildScrollView(
         child: Column(

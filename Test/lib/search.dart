@@ -1,14 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:test/model/profile.dart';
 import 'search_result.dart';
 import 'component/drawer.dart';
 
-class SearchPage extends StatelessWidget {
+class SearchPage extends StatefulWidget {
+  final Map<String, dynamic> info;
+  final Profile profile;
+
+  const SearchPage({
+    Key? key,
+    required this.profile,
+    required this.info,
+  }) : super(key: key);
+  @override
+  State<SearchPage> createState() => _SearchState();
+}
+
+class _SearchState extends State<SearchPage> {
   final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(),
+      drawer: NavDrawer(profile: widget.profile, info: widget.info),
       appBar: AppBar(
         backgroundColor: Colors.black,
         leading: IconButton(
@@ -39,7 +53,11 @@ class SearchPage extends StatelessWidget {
                     String searchQuery = _searchController.text;
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SecondPage(searchQuery)),
+                      MaterialPageRoute(
+                          builder: (context) => SecondPage(
+                              searchQuery: searchQuery,
+                              profile: widget.profile,
+                              info: widget.info)),
                     );
                   },
                   child: Padding(
@@ -47,7 +65,8 @@ class SearchPage extends StatelessWidget {
                     child: Icon(Icons.search, color: Colors.white),
                   ),
                 ),
-                contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
               ),
               onChanged: (value) {
                 print('Search query: $value');
@@ -57,7 +76,11 @@ class SearchPage extends StatelessWidget {
                 String searchQuery = _searchController.text;
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SecondPage(searchQuery)),
+                  MaterialPageRoute(
+                      builder: (context) => SecondPage(
+                          searchQuery: searchQuery,
+                          profile: widget.profile,
+                          info: widget.info)),
                 );
               },
               style: TextStyle(color: Colors.white),

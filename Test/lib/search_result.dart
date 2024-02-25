@@ -3,12 +3,21 @@ import 'package:test/component/drawer.dart';
 import 'package:test/component/nav.dart';
 import 'package:test/api/movie_service.dart';
 import 'package:test/component/widget.dart';
+import 'package:test/model/profile.dart';
 import 'details/movie_detail.dart';
 
 class SecondPage extends StatefulWidget {
   final String searchQuery;
+  final Map<String, dynamic> info;
+  final Profile profile;
 
-  SecondPage(this.searchQuery);
+  // Corrected constructor definition
+  const SecondPage({
+    Key? key,
+    required this.searchQuery,
+    required this.profile,
+    required this.info,
+  }) : super(key: key);
 
   @override
   _SecondPageState createState() => _SecondPageState();
@@ -26,7 +35,8 @@ class _SecondPageState extends State<SecondPage> {
 
   Future<void> _searchMovies() async {
     try {
-      final List<dynamic> result = await _movieService.searchMovies(widget.searchQuery);
+      final List<dynamic> result =
+          await _movieService.searchMovies(widget.searchQuery);
       setState(() {
         movies = result;
       });
@@ -36,7 +46,8 @@ class _SecondPageState extends State<SecondPage> {
   }
 
   // Function to handle movie tap
-  void _onMovieTap(String title, String overview, String? image, int id , String release_date) {
+  void _onMovieTap(String title, String overview, String? image, int id,
+      String release_date) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -44,7 +55,7 @@ class _SecondPageState extends State<SecondPage> {
           title: title,
           overview: overview,
           image: image,
-          id : id, 
+          id: id,
           release_date: release_date,
         ),
       ),
@@ -56,8 +67,11 @@ class _SecondPageState extends State<SecondPage> {
     return MaterialApp(
       title: "CINEMATE",
       home: Scaffold(
-        drawer: NavDrawer(),
-        appBar: Bar(),
+        drawer: NavDrawer(profile: widget.profile, info: widget.info),
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(kToolbarHeight),
+          child: Bar(profile: widget.profile, info: widget.info),
+        ),
         backgroundColor: Colors.black,
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,20 +99,26 @@ class _SecondPageState extends State<SecondPage> {
                   if (item['poster_path'] != null) {
                     return ProductBoxWidget(
                       name: item['title'],
-                      image: 'https://image.tmdb.org/t/p/w500/${item['poster_path']}',
+                      image:
+                          'https://image.tmdb.org/t/p/w500/${item['poster_path']}',
                       onTap: () {
-                        _onMovieTap(item['title'], item['overview'], item['backdrop_path'], item['id'],item['release_date']);
+                        _onMovieTap(
+                            item['title'],
+                            item['overview'],
+                            item['backdrop_path'],
+                            item['id'],
+                            item['release_date']);
                       },
                     );
-                  } 
-                  else {
+                  } else {
                     return ProductBoxWidget(
                       name: item['title'],
                       image: '',
                       onTap: () {
-                        _onMovieTap(item['title'], item['overview'], item['image'],item['id'],item['release_date']);
+                        _onMovieTap(item['title'], item['overview'],
+                            item['image'], item['id'], item['release_date']);
                       },
-                    );// Empty container for items without an image
+                    ); // Empty container for items without an image
                   }
                 }),
               ),
@@ -109,4 +129,3 @@ class _SecondPageState extends State<SecondPage> {
     );
   }
 }
-

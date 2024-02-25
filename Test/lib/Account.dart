@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:test/model/profile.dart';
 import 'component/drawer.dart';
 import 'Home.dart';
 import 'component/nav.dart';
 
 
 class Account extends StatefulWidget {
+  final Map<String, dynamic> info;
+  final Profile profile;
+
+  const Account({
+    Key? key,
+    required this.profile,
+    required this.info,
+  }) : super(key: key);
   @override
   State<Account> createState() => _AccountState();
 }
@@ -14,8 +23,11 @@ class _AccountState extends State<Account> {
 Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        drawer: NavDrawer(),
-        appBar: Bar(),
+        drawer: NavDrawer(profile: widget.profile, info: widget.info),
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(kToolbarHeight),
+          child: Bar(profile: widget.profile, info: widget.info),
+        ),
         backgroundColor: Colors.black,
         body: Padding(
           padding: EdgeInsets.all(16.0),
@@ -65,7 +77,7 @@ class _AccountFormState extends State<AccountForm> {
             controller: _usernameController,
             decoration: InputDecoration(
               labelText: 'Username',
-              labelStyle: TextStyle(color: Colors.deepOrange), // Set text color
+              labelStyle: TextStyle(color: Color(0xFFA04826)), // Set text color
             ),
             style: TextStyle(color: Colors.white), // Set text color
             validator: (value) {
@@ -80,9 +92,9 @@ class _AccountFormState extends State<AccountForm> {
             controller: _emailController,
             decoration: InputDecoration(
               labelText: 'Email',
-              labelStyle: TextStyle(color: Colors.white), // Set text color
+              labelStyle: TextStyle(color: Colors.white, fontFamily: 'EncodeSansCondensed',), // Set text color
             ),
-            style: TextStyle(color: Colors.white), // Set text color
+            style: TextStyle(color: Colors.white, fontFamily: 'EncodeSansCondensed',), // Set text color
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter an email';
@@ -96,9 +108,9 @@ class _AccountFormState extends State<AccountForm> {
             controller: _passwordController,
             decoration: InputDecoration(
               labelText: 'Password',
-              labelStyle: TextStyle(color: Colors.white), // Set text color
+              labelStyle: TextStyle(color: Colors.white, fontFamily: 'EncodeSansCondensed',), // Set text color
             ),
-            style: TextStyle(color: Colors.white), // Set text color
+            style: TextStyle(color: Colors.white, fontFamily: 'EncodeSansCondensed',), // Set text color
             obscureText: true,
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -112,9 +124,9 @@ class _AccountFormState extends State<AccountForm> {
             controller: _phonenumController,
             decoration: InputDecoration(
               labelText: 'Phonenumber',
-              labelStyle: TextStyle(color: Colors.white), // Set text color
+              labelStyle: TextStyle(color: Colors.white, fontFamily: 'EncodeSansCondensed',), // Set text color
             ),
-            style: TextStyle(color: Colors.white), // Set text color
+            style: TextStyle(color: Colors.white, fontFamily: 'EncodeSansCondensed',), // Set text color
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter an Phonenumber';
@@ -138,18 +150,18 @@ class _AccountFormState extends State<AccountForm> {
               }
             },
             style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.deepOrange, // Set the button color here
+            backgroundColor: Color(0xFFA04826), // Set the button color here
             ),
             child: Text(
               'Save',
-              style: TextStyle(color: Colors.white), // Set text color
+              style: TextStyle(color: Colors.white, fontFamily: 'EncodeSansCondensed',), // Set text color
             ),
           ),
           SizedBox(height: 20),
           // Additional Text widget at the bottom
           Text(
             'Privacy',
-            style: TextStyle(color: Colors.white, fontSize: 30),
+            style: TextStyle(color: Colors.white, fontSize: 30, fontFamily: 'EncodeSansCondensed',),
           ),
           Divider(
             color: Colors.white,
@@ -158,7 +170,7 @@ class _AccountFormState extends State<AccountForm> {
 
         Text(
             'Privacy is flakejl;aeoibjsaeiobjspjbspyvcyuaevyuvauvciuagbcuiabvuibauibvuibaiuvbauebuiavavbaueibvuaibvuiaebuifbauivdbkgkjsgfkjvcxkusf',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white, fontFamily: 'EncodeSansCondensed',),
           ),
         ],
       ),

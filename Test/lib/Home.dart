@@ -4,9 +4,18 @@ import 'package:test/component/drawer.dart';
 import 'package:test/component/nav.dart';
 import 'package:test/api/movie_service.dart';
 import 'package:test/component/widget.dart';
+import 'package:test/model/profile.dart';
 import 'details/movie_detail.dart';
 
 class Home extends StatefulWidget {
+  final Map<String, dynamic> info;
+  final Profile profile;
+
+  const Home({
+    Key? key,
+    required this.profile,
+    required this.info,
+  }) : super(key: key);
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -25,7 +34,7 @@ class _HomePageState extends State<Home> {
       movies.shuffle();
       return movies;
     });
-     ComedyMovies = movieService.getMoviesByGenre('35');
+    ComedyMovies = movieService.getMoviesByGenre('35');
     DocMovies = movieService.getMoviesByGenre('99');
     TvMovies = movieService.getMoviesByGenre('10770');
   }
@@ -46,10 +55,13 @@ class _HomePageState extends State<Home> {
   }
 
   @override
-   Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(),
-      appBar: Bar(),
+      drawer: NavDrawer(profile: widget.profile, info: widget.info),
+      appBar: PreferredSize(
+          preferredSize: Size.fromHeight(kToolbarHeight),
+          child: Bar(profile: widget.profile, info: widget.info),
+        ),
       backgroundColor: Colors.black,
       body: SingleChildScrollView(
         child: Column(
@@ -58,7 +70,7 @@ class _HomePageState extends State<Home> {
               future: randomMovies,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(),
                   );
                 } else if (snapshot.hasError) {
@@ -68,7 +80,6 @@ class _HomePageState extends State<Home> {
                 } else {
                   List? movies = snapshot.data;
 
-                  // Return the widget tree for randomMovies
                   return Column(
                 children: [
                   Align(
@@ -174,10 +185,9 @@ class _HomePageState extends State<Home> {
                 } else {
                   List? movies = snapshot.data;
 
-                  // Return the widget tree for actionMovies
                   return Column(
                     children: [
-                     Align(
+                    Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 10.0),
@@ -230,10 +240,9 @@ class _HomePageState extends State<Home> {
                 } else {
                   List? movies = snapshot.data;
 
-                  // Return the widget tree for actionMovies
-                 return Column(
+                return Column(
                     children: [
-                     Align(
+                    Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 10.0),
@@ -286,10 +295,9 @@ class _HomePageState extends State<Home> {
                 } else {
                   List? movies = snapshot.data;
 
-                  // Return the widget tree for actionMovies
-                 return Column(
+                return Column(
                     children: [
-                     Align(
+                    Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 10.0),
@@ -366,7 +374,6 @@ class _Top10MoviesWidgetState extends State<Top10MoviesWidget> {
   void initState() {
     super.initState();
 
-    // Automatically change page every 5 seconds
     Timer.periodic(Duration(seconds: 5), (timer) {
       if (_currentPage < (widget.topMovies?.length ?? 0) - 1) {
         _pageController.nextPage(

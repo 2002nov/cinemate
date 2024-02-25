@@ -3,6 +3,7 @@ import 'package:test/Lang.dart';
 import 'package:test/MyListpage.dart';
 import 'package:test/Moviepage.dart';
 import 'package:test/Pop.dart';
+import 'package:test/model/profile.dart';
 import '../HelpCenter.dart';
 import '../Home.dart';
 import '../Account.dart';
@@ -10,6 +11,14 @@ import '../Tv.dart';
 import '../login.dart';
 
 class NavDrawer extends StatefulWidget {
+  final Map<String, dynamic> info;
+  final Profile profile;
+
+  const NavDrawer({
+    Key? key,
+    required this.profile,
+    required this.info,
+  }) : super(key: key);
   @override
   _NavDrawerState createState() => _NavDrawerState();
 }
@@ -29,42 +38,48 @@ class _NavDrawerState extends State<NavDrawer> {
               _buildListItem('Home', () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => Home(),
+                    builder: (context) =>
+                        Home(profile: widget.profile, info: widget.info),
                   ),
                 );
               }),
               _buildListItem('TV shows', () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => Tv(),
+                    builder: (context) =>
+                        Tv(profile: widget.profile, info: widget.info),
                   ),
                 );
               }),
               _buildListItem('Movies', () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => Moviepage(),
+                    builder: (context) =>
+                        Moviepage(profile: widget.profile, info: widget.info),
                   ),
                 );
               }),
               _buildListItem('New & Popular', () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => Pop(),
+                    builder: (context) =>
+                        Pop(profile: widget.profile, info: widget.info),
                   ),
                 );
               }),
               _buildListItem('My List', () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => MyListPage(),
+                    builder: (context) =>
+                        MyListPage(profile: widget.profile, info: widget.info),
                   ),
                 );
               }),
               _buildListItem('Browse By Language', () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => Lang(),
+                    builder: (context) =>
+                        Lang(profile: widget.profile, info: widget.info),
                   ),
                 );
               }),
@@ -75,14 +90,16 @@ class _NavDrawerState extends State<NavDrawer> {
               _buildListItem('Account', () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => Account(),
+                    builder: (context) =>
+                        Account(profile: widget.profile, info: widget.info),
                   ),
                 );
               }),
               _buildListItem('Help Center', () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => Help(),
+                    builder: (context) =>
+                        Help(profile: widget.profile, info: widget.info),
                   ),
                 );
               }),
@@ -102,14 +119,25 @@ class _NavDrawerState extends State<NavDrawer> {
                     side: BorderSide(color: Colors.white),
                   ),
                 ),
-                child: Text(
-                  'Log Out',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'EncodeSansCondensed',
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                  ),
+                child: Row(
+                  mainAxisSize:
+                      MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.logout,
+                      color: Colors.white,
+                    ),
+                    SizedBox(width: 5),
+                    Text(
+                      'Log Out',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'EncodeSansCondensed',
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -124,7 +152,7 @@ class _NavDrawerState extends State<NavDrawer> {
       title: Text(
         title,
         style: TextStyle(
-          color:Colors.white,
+          color: Colors.white,
           fontFamily: 'EncodeSansCondensed',
           fontSize: 15,
           fontWeight: FontWeight.bold,

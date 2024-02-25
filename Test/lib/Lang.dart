@@ -4,8 +4,17 @@ import 'package:test/component/drawer.dart';
 import 'package:test/details/movie_detail.dart';
 import 'package:test/component/nav.dart';
 import 'package:test/component/widget.dart';
+import 'package:test/model/profile.dart';
 
 class Lang extends StatefulWidget {
+  final Map<String, dynamic> info;
+  final Profile profile;
+
+  const Lang({
+    Key? key,
+    required this.profile,
+    required this.info,
+  }) : super(key: key);
   @override
   _LanguageBasedMoviePageState createState() => _LanguageBasedMoviePageState();
 }
@@ -46,8 +55,11 @@ class _LanguageBasedMoviePageState extends State<Lang> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(),
-      appBar: Bar(),
+      drawer: NavDrawer(profile: widget.profile, info: widget.info),
+      appBar: PreferredSize(
+          preferredSize: Size.fromHeight(kToolbarHeight),
+          child: Bar(profile: widget.profile, info: widget.info),
+        ),
       backgroundColor: Colors.black,
       body: Column(
         children: [

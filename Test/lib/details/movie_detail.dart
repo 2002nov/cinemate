@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:test/component/drawer.dart';
-import 'package:test/component/nav.dart';
+// import 'package:test/component/drawer.dart';
+// import 'package:test/component/nav.dart';
 import 'package:http/http.dart';
 import 'package:chewie/chewie.dart';
+import 'package:test/component/navdetail.dart';
 import 'package:video_player/video_player.dart';
 
 class MovieDetailPage extends StatefulWidget {
@@ -28,8 +29,12 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(),
-      appBar: Bar(),
+      // drawer: NavDrawer(profile: widget.profile, info: widget.info),
+      // appBar: Bar(),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: Nav(),
+      ),
       backgroundColor: Colors.black,
       body: Container(
         color: Colors.black,
@@ -56,6 +61,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
+                        fontFamily: 'EncodeSansCondensed',
                       ),
                     ),
                     Text(
@@ -64,6 +70,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                         fontSize: 16,
                         fontWeight: FontWeight.normal,
                         color: Colors.white,
+                        fontFamily: 'EncodeSansCondensed',
                       ),
                     ),
                     SizedBox(height: 16),
@@ -73,6 +80,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
+                        fontFamily: 'EncodeSansCondensed',
                       ),
                     ),
                     SizedBox(height: 8),
@@ -83,6 +91,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.white,
+                          fontFamily: 'EncodeSansCondensed',
                         ),
                       ),
                     ),
@@ -93,15 +102,15 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        label: Text('Go Back'),
-        icon: Icon(Icons.arrow_back),
-        backgroundColor: Colors.orange,
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // floatingActionButton: FloatingActionButton.extended(
+      //   onPressed: () {
+      //     Navigator.pop(context);
+      //   },
+      //   label: Text('Go Back'),
+      //   icon: Icon(Icons.arrow_back),
+      //   backgroundColor: Colors.orange,
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

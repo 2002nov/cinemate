@@ -5,10 +5,19 @@ import 'package:test/component/drawer.dart';
 import 'package:test/component/nav.dart';
 import 'package:test/api/movie_service.dart';
 import 'package:test/component/widget.dart';
+import 'package:test/model/profile.dart';
 import 'details/movie_detail.dart';
 
 
 class Tv extends StatefulWidget {
+  final Map<String, dynamic> info;
+  final Profile profile;
+
+  const Tv({
+    Key? key,
+    required this.profile,
+    required this.info,
+  }) : super(key: key);
   @override
   State<Tv> createState() => _TvState();
 }
@@ -51,8 +60,11 @@ final MovieService movieService = MovieService();
   @override
 Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(),
-      appBar: Bar(),
+      drawer: NavDrawer(profile: widget.profile, info: widget.info),
+      appBar: PreferredSize(
+          preferredSize: Size.fromHeight(kToolbarHeight),
+          child: Bar(profile: widget.profile, info: widget.info),
+        ),
       backgroundColor: Colors.black,
       body: SingleChildScrollView(
         child: Column(
