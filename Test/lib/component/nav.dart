@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'search.dart';
+import '../search.dart';
 
 class Bar extends StatelessWidget implements PreferredSizeWidget {
   @override

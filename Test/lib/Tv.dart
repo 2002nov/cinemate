@@ -1,52 +1,55 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:test/details/Tv_detail.dart';
 import 'package:test/component/drawer.dart';
 import 'package:test/component/nav.dart';
 import 'package:test/api/movie_service.dart';
 import 'package:test/component/widget.dart';
 import 'details/movie_detail.dart';
 
-class Home extends StatefulWidget {
+
+class Tv extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  State<Tv> createState() => _TvState();
 }
 
-class _HomePageState extends State<Home> {
-  final MovieService movieService = MovieService();
-  late Future<List<dynamic>> randomMovies;
-    late Future<List<dynamic>> ComedyMovies;
-  late Future<List<dynamic>> DocMovies;
-  late Future<List<dynamic>> TvMovies;
+class _TvState extends State<Tv> {
+final MovieService movieService = MovieService();
+  late Future<List<dynamic>> RandomTVShows;
+  late Future<List<dynamic>> FamilyTVShows;
+  late Future<List<dynamic>> KidTVShows;
+  late Future<List<dynamic>> RealityTVShows;
+  
 
   @override
   void initState() {
     super.initState();
-    randomMovies = movieService.getRandomMovies().then((movies) {
-      movies.shuffle();
-      return movies;
+    RandomTVShows = movieService.getRandomTVShows().then((tvShows) {
+      tvShows.shuffle();
+      return tvShows;
     });
-     ComedyMovies = movieService.getMoviesByGenre('35');
-    DocMovies = movieService.getMoviesByGenre('99');
-    TvMovies = movieService.getMoviesByGenre('10770');
+    FamilyTVShows = movieService.getTvByGenre('10751');
+    KidTVShows = movieService.getTvByGenre('10762');
+    RealityTVShows = movieService.getTvByGenre('10764');
   }
 
-  void _onMovieTap(String title, String overview, String? image, int id, String release_date) {
+  void _onTvTap(String original_name, String overview, String? image, int id, String first_air_date) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => MovieDetailPage(
-          title: title,
+        builder: (context) => TvDetailPage(
+          original_name: original_name,
           overview: overview,
           image: image,
           id: id,
-          release_date: release_date,
+          first_air_date: first_air_date,
         ),
       ),
     );
   }
 
   @override
-   Widget build(BuildContext context) {
+Widget build(BuildContext context) {
     return Scaffold(
       drawer: NavDrawer(),
       appBar: Bar(),
@@ -55,7 +58,7 @@ class _HomePageState extends State<Home> {
         child: Column(
           children: [
             FutureBuilder(
-              future: randomMovies,
+              future: RandomTVShows,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
@@ -109,12 +112,12 @@ class _HomePageState extends State<Home> {
                       itemBuilder: (context, index) {
                         Map<String, dynamic> movie = movies?[index];
                         return ProductBoxWidget(
-                          name: movie['title'],
+                          name: movie['original_name'],
                           image:
                               'https://image.tmdb.org/t/p/w500${movie['poster_path']}',
                           onTap: () {
-                            _onMovieTap(movie['title'], movie['overview'],
-                                movie['backdrop_path'], movie['id'],movie['release_date']);
+                            _onTvTap(movie['original_name'], movie['overview'],
+                                movie['backdrop_path'], movie['id'],movie['first_air_date']);
                           },
                         );
                       },
@@ -143,25 +146,39 @@ class _HomePageState extends State<Home> {
                       itemBuilder: (context, index) {
                         Map<String, dynamic> movie = movies?[index];
                         return ProductBoxWidget(
-                          name: movie['title'],
+                          name: movie['original_name'],
                           image:
                               'https://image.tmdb.org/t/p/w500${movie['poster_path']}',
                           onTap: () {
-                            _onMovieTap(movie['title'], movie['overview'],
-                                movie['backdrop_path'], movie['id'],movie['release_date']);
+                            _onTvTap(movie['original_name'], movie['overview'],
+                                movie['backdrop_path'], movie['id'],movie['first_air_date']);
                             },
                           );
                         },
                       ),
                     ),
-                    Top10MoviesWidget(topMovies: movies),
+                    Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10.0),
+                      child: Text(
+                        'Top 10 ',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontFamily: 'EncodeSansCondensed'),
+                        textAlign: TextAlign.start,
+                      ),
+                    ),
+                  ),SizedBox(height: 20,),
+                    Top10TvWidget(topMovies: movies),
                   ],
                 );
               }
             },
           ),
             FutureBuilder(
-              future: TvMovies,
+              future: FamilyTVShows,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
@@ -182,7 +199,7 @@ class _HomePageState extends State<Home> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 10.0),
                       child: Text(
-                        'TV Movies',
+                        'Family TV Show',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,
@@ -200,12 +217,12 @@ class _HomePageState extends State<Home> {
                       itemBuilder: (context, index) {
                         Map<String, dynamic> movie = movies?[index];
                         return ProductBoxWidget(
-                          name: movie['title'],
+                          name: movie['original_name'],
                           image:
                               'https://image.tmdb.org/t/p/w500${movie['poster_path']}',
                           onTap: () {
-                            _onMovieTap(movie['title'], movie['overview'],
-                                movie['backdrop_path'], movie['id'],movie['release_date']);
+                            _onTvTap(movie['original_name'], movie['overview'],
+                                movie['backdrop_path'], movie['id'],movie['first_air_date']);
                           },
                         );
                       },
@@ -217,7 +234,7 @@ class _HomePageState extends State<Home> {
               },
             ),
             FutureBuilder(
-              future: DocMovies,
+              future: KidTVShows,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
@@ -238,7 +255,7 @@ class _HomePageState extends State<Home> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 10.0),
                       child: Text(
-                        'Documentary Movies',
+                        'Kids TV Show',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,
@@ -256,12 +273,12 @@ class _HomePageState extends State<Home> {
                       itemBuilder: (context, index) {
                         Map<String, dynamic> movie = movies?[index];
                         return ProductBoxWidget(
-                          name: movie['title'],
+                          name: movie['original_name'],
                           image:
                               'https://image.tmdb.org/t/p/w500${movie['poster_path']}',
                           onTap: () {
-                            _onMovieTap(movie['title'], movie['overview'],
-                                movie['backdrop_path'], movie['id'],movie['release_date']);
+                            _onTvTap(movie['original_name'], movie['overview'],
+                                movie['backdrop_path'], movie['id'],movie['first_air_date']);
                           },
                         );
                       },
@@ -273,7 +290,7 @@ class _HomePageState extends State<Home> {
               },
             ),
             FutureBuilder(
-              future: ComedyMovies,
+              future: RealityTVShows,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
@@ -294,7 +311,7 @@ class _HomePageState extends State<Home> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 10.0),
                       child: Text(
-                        'Comedy Moives',
+                        'Reality TV Show',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,
@@ -312,12 +329,12 @@ class _HomePageState extends State<Home> {
                       itemBuilder: (context, index) {
                         Map<String, dynamic> movie = movies?[index];
                         return ProductBoxWidget(
-                          name: movie['title'],
+                          name: movie['original_name'],
                           image:
                               'https://image.tmdb.org/t/p/w500${movie['poster_path']}',
                           onTap: () {
-                            _onMovieTap(movie['title'], movie['overview'],
-                                movie['backdrop_path'], movie['id'],movie['release_date']);
+                            _onTvTap(movie['original_name'], movie['overview'],
+                                movie['backdrop_path'], movie['id'],movie['first_air_date']);
                           },
                         );
                       },
@@ -335,99 +352,4 @@ class _HomePageState extends State<Home> {
   }
 }
 
-class Top10MoviesWidget extends StatefulWidget {
-  final List<dynamic>? topMovies;
-
-  const Top10MoviesWidget({Key? key, this.topMovies}) : super(key: key);
-
-  @override
-  _Top10MoviesWidgetState createState() => _Top10MoviesWidgetState();
-}
-
-class _Top10MoviesWidgetState extends State<Top10MoviesWidget> {
-  final PageController _pageController = PageController(viewportFraction: 0.8);
-  int _currentPage = 0;
-
-  void _onMovieTap(String title, String overview, String? image, int id ,String release_date) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => MovieDetailPage(
-          title: title,
-          overview: overview,
-          image: image,
-          id: id, release_date: release_date,
-        ),
-      ),
-    );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    // Automatically change page every 5 seconds
-    Timer.periodic(Duration(seconds: 5), (timer) {
-      if (_currentPage < (widget.topMovies?.length ?? 0) - 1) {
-        _pageController.nextPage(
-          duration: Duration(milliseconds: 500),
-          curve: Curves.easeOut,
-        );
-      } else {
-        _pageController.jumpToPage(0);
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 10.0),
-            child: Text(
-              'Top 10',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontFamily: 'EncodeSansCondensed'),
-              textAlign: TextAlign.start,
-            ),
-          ),
-        ),
-        SizedBox(height: 20,),
-        Container(
-          height: 240,
-          child: PageView.builder(
-            controller: _pageController,
-            itemCount: widget.topMovies?.length ?? 0,
-            onPageChanged: (index) {
-              setState(() {
-                _currentPage = index;
-              });
-            },
-            itemBuilder: (context, index) {
-              Map<String, dynamic> movie = widget.topMovies![index];
-              return FullBoxWidget(
-                name: movie['title'],
-                image: 'https://image.tmdb.org/t/p/w500${movie['backdrop_path']}',
-                onTap: () {
-                  _onMovieTap(
-                    movie['title'],
-                    movie['overview'],
-                    movie['backdrop_path'],
-                    movie['id'],
-                    movie['release_date'],
-                  );
-                },
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
-}
 

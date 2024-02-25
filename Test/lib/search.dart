@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'search_result.dart';
-import 'drawer.dart';
+import 'component/drawer.dart';
 
 class SearchPage extends StatelessWidget {
   final TextEditingController _searchController = TextEditingController();
@@ -51,6 +51,14 @@ class SearchPage extends StatelessWidget {
               ),
               onChanged: (value) {
                 print('Search query: $value');
+              },
+              onSubmitted: (String value) {
+                // This callback is called when the user submits the search query
+                String searchQuery = _searchController.text;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SecondPage(searchQuery)),
+                );
               },
               style: TextStyle(color: Colors.white),
             ),

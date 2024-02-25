@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:test/search.dart';
-import 'drawer.dart';
+import 'component/drawer.dart';
 import 'Home.dart';
-import 'nav.dart';
+import 'component/nav.dart';
 
 class Help extends StatefulWidget {
   @override
