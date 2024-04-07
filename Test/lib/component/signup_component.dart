@@ -76,24 +76,28 @@ class SignupComponent extends StatelessWidget {
                           'phone': profile.phone,
                           'email': profile.email,
                           'password': profile.password,
+                          'createdAt': FieldValue.serverTimestamp(),
                             'info1': {
-                              'name': 'Name1',
+                              'infoid': 'info1',
+                              'name': 'Anonymous',
                               'image': 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
                             },
                             'info2': {
-                              'name': 'Name2',
+                              'infoid': 'info2',
+                              'name': 'Anonymous',
                               'image': 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
                             },
                             'info3': {
-                              'name': 'Name3',
-                              'image': 'ahttps://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+                              'infoid': 'info3',
+                              'name': 'Anonymous',
+                              'image': 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
                             },
                             'info4': {
-                              'name': 'Name4',
+                              'infoid': 'info4',
+                              'name': 'Anonymous',
                               'image': 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
                             },
                         });
-
                         formKey.currentState!.reset();
                       });
                     } on FirebaseAuthException catch (e) {

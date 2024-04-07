@@ -8,7 +8,6 @@ import 'package:test/component/widget.dart';
 import 'package:test/model/profile.dart';
 import 'details/movie_detail.dart';
 
-
 class Tv extends StatefulWidget {
   final Map<String, dynamic> info;
   final Profile profile;
@@ -23,12 +22,11 @@ class Tv extends StatefulWidget {
 }
 
 class _TvState extends State<Tv> {
-final MovieService movieService = MovieService();
+  final MovieService movieService = MovieService();
   late Future<List<dynamic>> RandomTVShows;
   late Future<List<dynamic>> FamilyTVShows;
   late Future<List<dynamic>> KidTVShows;
   late Future<List<dynamic>> RealityTVShows;
-  
 
   @override
   void initState() {
@@ -42,7 +40,8 @@ final MovieService movieService = MovieService();
     RealityTVShows = movieService.getTvByGenre('10764');
   }
 
-  void _onTvTap(String original_name, String overview, String? image, int id, String first_air_date) {
+  void _onTvTap(String original_name, String overview, String? image, int id,
+      String first_air_date) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -58,13 +57,13 @@ final MovieService movieService = MovieService();
   }
 
   @override
-Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     return Scaffold(
       drawer: NavDrawer(profile: widget.profile, info: widget.info),
       appBar: PreferredSize(
-          preferredSize: Size.fromHeight(kToolbarHeight),
-          child: Bar(profile: widget.profile, info: widget.info),
-        ),
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: Bar(profile: widget.profile, info: widget.info),
+      ),
       backgroundColor: Colors.black,
       body: SingleChildScrollView(
         child: Column(
@@ -85,110 +84,140 @@ Widget build(BuildContext context) {
 
                   // Return the widget tree for randomMovies
                   return Column(
-                children: [
-                  Align(
-                    child: Align(
-                      alignment: Alignment.topCenter,
-                      child: Container(
-                        color: Colors.transparent,
-                        child: Image.network(
-                          'https://image.tmdb.org/t/p/w500${movies?[3]['poster_path']}',
-                          width: double.infinity,
-                          height: 475,
-                          fit: BoxFit.fill,
+                    children: [
+                      Align(
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          child: Stack(
+                            children: [
+                              Container(
+                                color: Colors.transparent,
+                                child: Image.network(
+                                  'https://image.tmdb.org/t/p/w500${movies?[3]['poster_path']}',
+                                  width: double.infinity,
+                                  height: 555,
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                              Container(
+                                height: 555,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Colors.black.withOpacity(0.9),
+                                      Colors.transparent,
+                                      Colors.black.withOpacity(0.9),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
-                      child: Text(
-                        'Perfect Tonight',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontFamily: 'EncodeSansCondensed'),
-                        textAlign: TextAlign.start,
+                      SizedBox(height: 5),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10.0),
+                          child: Text(
+                            'Perfect Tonight',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 24,
+                                fontFamily: 'EncodeSansCondensed'),
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Container(
-                    height: 238,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: movies?.length,
-                      itemBuilder: (context, index) {
-                        Map<String, dynamic> movie = movies?[index];
-                        return ProductBoxWidget(
-                          name: movie['original_name'],
-                          image:
-                              'https://image.tmdb.org/t/p/w500${movie['poster_path']}',
-                          onTap: () {
-                            _onTvTap(movie['original_name'], movie['overview'],
-                                movie['backdrop_path'], movie['id'],movie['first_air_date']);
+                      SizedBox(height: 20),
+                      Container(
+                        height: 238,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: movies?.length,
+                          itemBuilder: (context, index) {
+                            Map<String, dynamic> movie = movies?[index];
+                            return ProductBoxWidget(
+                              name: movie['original_name'],
+                              image:
+                                  'https://image.tmdb.org/t/p/w500${movie['poster_path']}',
+                              onTap: () {
+                                _onTvTap(
+                                    movie['original_name'],
+                                    movie['overview'],
+                                    movie['backdrop_path'],
+                                    movie['id'],
+                                    movie['first_air_date']);
+                              },
+                            );
                           },
-                        );
-                      },
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
-                      child: Text(
-                        'Continue Watching',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontFamily: 'EncodeSansCondensed'),
-                        textAlign: TextAlign.start,
+                        ),
                       ),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Container(
-                    height: 240,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: movies?.length,
-                      itemBuilder: (context, index) {
-                        Map<String, dynamic> movie = movies?[index];
-                        return ProductBoxWidget(
-                          name: movie['original_name'],
-                          image:
-                              'https://image.tmdb.org/t/p/w500${movie['poster_path']}',
-                          onTap: () {
-                            _onTvTap(movie['original_name'], movie['overview'],
-                                movie['backdrop_path'], movie['id'],movie['first_air_date']);
-                            },
-                          );
-                        },
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10.0),
+                          child: Text(
+                            'Continue Watching',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 24,
+                                fontFamily: 'EncodeSansCondensed'),
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
                       ),
-                    ),
-                    Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
-                      child: Text(
-                        'Top 10 ',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontFamily: 'EncodeSansCondensed'),
-                        textAlign: TextAlign.start,
+                      SizedBox(height: 20),
+                      Container(
+                        height: 240,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: movies?.length,
+                          itemBuilder: (context, index) {
+                            Map<String, dynamic> movie = movies?[index];
+                            return ProductBoxWidget(
+                              name: movie['original_name'],
+                              image:
+                                  'https://image.tmdb.org/t/p/w500${movie['poster_path']}',
+                              onTap: () {
+                                _onTvTap(
+                                    movie['original_name'],
+                                    movie['overview'],
+                                    movie['backdrop_path'],
+                                    movie['id'],
+                                    movie['first_air_date']);
+                              },
+                            );
+                          },
+                        ),
                       ),
-                    ),
-                  ),SizedBox(height: 20,),
-                    Top10TvWidget(topMovies: movies),
-                  ],
-                );
-              }
-            },
-          ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10.0),
+                          child: Text(
+                            'Top 10 ',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 24,
+                                fontFamily: 'EncodeSansCondensed'),
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Top10TvWidget(topMovies: movies),
+                    ],
+                  );
+                }
+              },
+            ),
             FutureBuilder(
               future: FamilyTVShows,
               builder: (context, snapshot) {
@@ -206,40 +235,46 @@ Widget build(BuildContext context) {
                   // Return the widget tree for actionMovies
                   return Column(
                     children: [
-                     Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
-                      child: Text(
-                        'Family TV Show',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontFamily: 'EncodeSansCondensed'),
-                        textAlign: TextAlign.start,
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10.0),
+                          child: Text(
+                            'Family TV Show',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 24,
+                                fontFamily: 'EncodeSansCondensed'),
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  SizedBox(height: 20,),
-                  Container(
-                    height: 240,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: movies?.length,
-                      itemBuilder: (context, index) {
-                        Map<String, dynamic> movie = movies?[index];
-                        return ProductBoxWidget(
-                          name: movie['original_name'],
-                          image:
-                              'https://image.tmdb.org/t/p/w500${movie['poster_path']}',
-                          onTap: () {
-                            _onTvTap(movie['original_name'], movie['overview'],
-                                movie['backdrop_path'], movie['id'],movie['first_air_date']);
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        height: 240,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: movies?.length,
+                          itemBuilder: (context, index) {
+                            Map<String, dynamic> movie = movies?[index];
+                            return ProductBoxWidget(
+                              name: movie['original_name'],
+                              image:
+                                  'https://image.tmdb.org/t/p/w500${movie['poster_path']}',
+                              onTap: () {
+                                _onTvTap(
+                                    movie['original_name'],
+                                    movie['overview'],
+                                    movie['backdrop_path'],
+                                    movie['id'],
+                                    movie['first_air_date']);
+                              },
+                            );
                           },
-                        );
-                      },
-                    ),
-                  ),
+                        ),
+                      ),
                     ],
                   );
                 }
@@ -260,42 +295,48 @@ Widget build(BuildContext context) {
                   List? movies = snapshot.data;
 
                   // Return the widget tree for actionMovies
-                 return Column(
+                  return Column(
                     children: [
-                     Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
-                      child: Text(
-                        'Kids TV Show',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontFamily: 'EncodeSansCondensed'),
-                        textAlign: TextAlign.start,
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10.0),
+                          child: Text(
+                            'Kids TV Show',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 24,
+                                fontFamily: 'EncodeSansCondensed'),
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  SizedBox(height: 20,),
-                  Container(
-                    height: 240,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: movies?.length,
-                      itemBuilder: (context, index) {
-                        Map<String, dynamic> movie = movies?[index];
-                        return ProductBoxWidget(
-                          name: movie['original_name'],
-                          image:
-                              'https://image.tmdb.org/t/p/w500${movie['poster_path']}',
-                          onTap: () {
-                            _onTvTap(movie['original_name'], movie['overview'],
-                                movie['backdrop_path'], movie['id'],movie['first_air_date']);
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        height: 240,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: movies?.length,
+                          itemBuilder: (context, index) {
+                            Map<String, dynamic> movie = movies?[index];
+                            return ProductBoxWidget(
+                              name: movie['original_name'],
+                              image:
+                                  'https://image.tmdb.org/t/p/w500${movie['poster_path']}',
+                              onTap: () {
+                                _onTvTap(
+                                    movie['original_name'],
+                                    movie['overview'],
+                                    movie['backdrop_path'],
+                                    movie['id'],
+                                    movie['first_air_date']);
+                              },
+                            );
                           },
-                        );
-                      },
-                    ),
-                  ),
+                        ),
+                      ),
                     ],
                   );
                 }
@@ -316,42 +357,48 @@ Widget build(BuildContext context) {
                   List? movies = snapshot.data;
 
                   // Return the widget tree for actionMovies
-                 return Column(
+                  return Column(
                     children: [
-                     Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
-                      child: Text(
-                        'Reality TV Show',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontFamily: 'EncodeSansCondensed'),
-                        textAlign: TextAlign.start,
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10.0),
+                          child: Text(
+                            'Reality TV Show',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 24,
+                                fontFamily: 'EncodeSansCondensed'),
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  SizedBox(height: 20,),
-                  Container(
-                    height: 240,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: movies?.length,
-                      itemBuilder: (context, index) {
-                        Map<String, dynamic> movie = movies?[index];
-                        return ProductBoxWidget(
-                          name: movie['original_name'],
-                          image:
-                              'https://image.tmdb.org/t/p/w500${movie['poster_path']}',
-                          onTap: () {
-                            _onTvTap(movie['original_name'], movie['overview'],
-                                movie['backdrop_path'], movie['id'],movie['first_air_date']);
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        height: 240,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: movies?.length,
+                          itemBuilder: (context, index) {
+                            Map<String, dynamic> movie = movies?[index];
+                            return ProductBoxWidget(
+                              name: movie['original_name'],
+                              image:
+                                  'https://image.tmdb.org/t/p/w500${movie['poster_path']}',
+                              onTap: () {
+                                _onTvTap(
+                                    movie['original_name'],
+                                    movie['overview'],
+                                    movie['backdrop_path'],
+                                    movie['id'],
+                                    movie['first_air_date']);
+                              },
+                            );
                           },
-                        );
-                      },
-                    ),
-                  ),
+                        ),
+                      ),
                     ],
                   );
                 }
@@ -363,5 +410,3 @@ Widget build(BuildContext context) {
     );
   }
 }
-
-

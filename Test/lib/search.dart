@@ -68,9 +68,6 @@ class _SearchState extends State<SearchPage> {
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
               ),
-              onChanged: (value) {
-                print('Search query: $value');
-              },
               onSubmitted: (String value) {
                 // This callback is called when the user submits the search query
                 String searchQuery = _searchController.text;

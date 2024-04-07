@@ -16,7 +16,7 @@ class _NavState extends State<Nav> {
         'assets/logo.jpg', 
         height: 80,
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.transparent,
       foregroundColor: Colors.white,
       leading: IconButton(
         icon: Icon(Icons.arrow_back, color: Colors.white),

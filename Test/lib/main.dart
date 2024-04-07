@@ -1,4 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
+import 'package:test/details/movie_detail.dart';
+import 'package:test/model/Movie.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:test/login.dart';
@@ -9,14 +12,22 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => MovieAddedPressedProvider(),
+      child: MyApp(),
+    ),
+  );
 }
+
+// List<Movie> favoriteMovies = [];
 
 class MyApp extends StatelessWidget {
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
 
   @override
   Widget build(BuildContext context) {
+
     return FutureBuilder(
       future: firebase,
       builder: (context, snapshot) {
@@ -34,7 +45,6 @@ class MyApp extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           return MaterialApp(
             title: 'CINEMATE',
-            // home: users(),
             home: LoginApp(),
           );
         } else {

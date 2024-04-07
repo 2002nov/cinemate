@@ -26,7 +26,7 @@ class _BarState extends State<Bar> {
         'assets/logo.jpg', 
         height: 80,
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.transparent,
       foregroundColor: Colors.white,
       actions: [
         IconButton(

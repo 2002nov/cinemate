@@ -30,8 +30,8 @@ class _LanguageBasedMoviePageState extends State<Lang> {
     loadMovies();
   }
 
-  void _onMovieTap(
-      String title, String overview, String? image, int id, String release_date) {
+  void _onMovieTap(String title, String overview, String? image, int id,
+      String release_date) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -57,9 +57,9 @@ class _LanguageBasedMoviePageState extends State<Lang> {
     return Scaffold(
       drawer: NavDrawer(profile: widget.profile, info: widget.info),
       appBar: PreferredSize(
-          preferredSize: Size.fromHeight(kToolbarHeight),
-          child: Bar(profile: widget.profile, info: widget.info),
-        ),
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: Bar(profile: widget.profile, info: widget.info),
+      ),
       backgroundColor: Colors.black,
       body: Column(
         children: [
@@ -70,47 +70,107 @@ class _LanguageBasedMoviePageState extends State<Lang> {
               children: [
                 Text(
                   'Select Language:',
-                  style: TextStyle(color: Colors.white, fontSize: 18),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30,
+                    color: Colors.white,
+                    fontFamily: 'EncodeSansCondensed',
+                  ),
                 ),
-                SizedBox(width: 16), // Add some space between text and dropdown
-                DropdownButton<String>(
-                  value: selectedLanguage,
-                  onChanged: (String? newValue) {
-                    if (newValue != null) {
-                      setState(() {
-                        selectedLanguage = newValue;
-                        loadMovies();
-                      });
-                    }
-                  },
-                  style: TextStyle(color: Colors.black), // Set the selection box color
-                  items: [
-                    DropdownMenuItem(
-                      value: 'en',
-                      child: Text('English', style: TextStyle(color: Color.fromARGB(255, 103, 97, 97))),
+                SizedBox(width: 20), // Add some space between text and dropdown
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.transparent, // Dropdown background color
+                    border: Border.all(
+                      width: 2.0,
+                      color: Colors.white,
                     ),
-                    DropdownMenuItem(
-                      value: 'es',
-                      child: Text('Spanish', style: TextStyle(color: Color.fromARGB(255, 103, 97, 97))),
-                    ),
-                    DropdownMenuItem(
-                      value: 'th',
-                      child: Text('Thai', style: TextStyle(color: Color.fromARGB(255, 103, 97, 97))),
-                    ),
-                    DropdownMenuItem(
-                      value: 'ja',
-                      child: Text('Japanese', style: TextStyle(color: Color.fromARGB(255, 103, 97, 97))),
-                    ),
-                    DropdownMenuItem(
-                      value: 'cn',
-                      child: Text('Chinese', style: TextStyle(color: Color.fromARGB(255, 103, 97, 97))),
-                    ),
-                    // Add more language options as needed
-                  ],
+                    borderRadius: BorderRadius.circular(30), // Rounded corners
+                  ),
+                  child: DropdownButton<String>(
+                    value: selectedLanguage,
+                    dropdownColor: Colors.black,
+                    onChanged: (String? newValue) {
+                      if (newValue != null) {
+                        setState(() {
+                          selectedLanguage = newValue;
+                          loadMovies();
+                        });
+                      }
+                    },
+                    style: TextStyle(
+                      color: Colors.black,
+                    ), // Set the selection box color
+                    items: [
+                      DropdownMenuItem(
+                        value: 'en',
+                        child: Text(
+                          'English',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                            color: Colors.white,
+                            fontFamily: 'EncodeSansCondensed',
+                          ),
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: 'es',
+                        child: Text(
+                          'Spanish',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                            color: Colors.white,
+                            fontFamily: 'EncodeSansCondensed',
+                          ),
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: 'th',
+                        child: Text(
+                          'Thai',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                            color: Colors.white,
+                            fontFamily: 'EncodeSansCondensed',
+                          ),
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: 'ja',
+                        child: Text(
+                          'Japanese',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                            color: Colors.white,
+                            fontFamily: 'EncodeSansCondensed',
+                          ),
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: 'cn',
+                        child: Text(
+                          'Chinese',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                            color: Colors.white,
+                            fontFamily: 'EncodeSansCondensed',
+                          ),
+                        ),
+                      ),
+                      // Add more language options as needed
+                    ],
+                  ),
                 ),
               ],
             ),
           ),
+          SizedBox(height: 20),
           // Movie list
           Expanded(
             child: FutureBuilder(

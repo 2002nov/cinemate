@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:test/details/Tv_detail.dart';
 import 'package:test/details/movie_detail.dart';
@@ -29,25 +28,25 @@ class FullBoxWidget extends StatelessWidget {
         ),
         child: Column(
           children: [
-            if (image != '' )
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10.0),
-              child: Image.network(
-                image,
-                height: imageHeight,
-                width: screenWidth,
-                fit: BoxFit.fitWidth,
-              ),
-            )else
+            if (image != '')
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10.0),
+                child: Image.network(
+                  image,
+                  height: imageHeight,
+                  width: screenWidth,
+                  fit: BoxFit.fitWidth,
+                ),
+              )
+            else
               Container(
                 height: imageHeight,
                 width: screenWidth,
                 decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white,
-                          ),
-              )
-            ,
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white,
+                ),
+              ),
             Container(
               padding: EdgeInsets.all(8.0),
               color: Colors.black,
@@ -107,24 +106,24 @@ class ProductBoxWidget extends StatelessWidget {
         child: Column(
           children: [
             if (image != '')
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10.0),
-              child: Image.network(
-                image,
-                height: imageHeight,
-                width: imageWidth,
-                fit: BoxFit.cover,
-              ),
-            )else
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10.0),
+                child: Image.network(
+                  image,
+                  height: imageHeight,
+                  width: imageWidth,
+                  fit: BoxFit.cover,
+                ),
+              )
+            else
               Container(
                 height: imageHeight,
                 width: imageWidth,
                 decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white,
-                          ),
-              )
-            ,
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white,
+                ),
+              ),
             Container(
               padding: EdgeInsets.all(8.0),
               color: Colors.black,
@@ -171,7 +170,8 @@ class _Top10MoviesWidgetState extends State<Top10MoviesWidget> {
   final PageController _pageController = PageController(viewportFraction: 0.8);
   int _currentPage = 0;
 
-  void _onMovieTap(String title, String overview, String? image, int id ,String release_date) {
+  void _onMovieTap(String title, String overview, String? image, int id,
+      String release_date) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -179,7 +179,10 @@ class _Top10MoviesWidgetState extends State<Top10MoviesWidget> {
           title: title,
           overview: overview,
           image: image,
-          id: id, release_date: release_date,
+          id: id,
+          release_date: release_date,
+          // popularity: popularity,
+          // vote_average: vote_average,
         ),
       ),
     );
@@ -218,7 +221,9 @@ class _Top10MoviesWidgetState extends State<Top10MoviesWidget> {
             },
             itemBuilder: (context, index) {
               Map<String, dynamic> movie = widget.topMovies![index];
-              return FullBoxWidget(
+              return Padding( // Wrap FullBoxWidget with Padding
+              padding: EdgeInsets.symmetric(horizontal: 8), // Adjust spacing as needed
+              child: FullBoxWidget(
                 name: movie['title'],
                 image: 'https://image.tmdb.org/t/p/w500${movie['backdrop_path']}',
                 onTap: () {
@@ -228,15 +233,18 @@ class _Top10MoviesWidgetState extends State<Top10MoviesWidget> {
                     movie['backdrop_path'],
                     movie['id'],
                     movie['release_date'],
+                    // movie['popularity'],
+                    // movie['vote_average'],
                   );
                 },
-              );
-            },
-          ),
+              ),
+            );
+          },
         ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
+}
 }
 
 class Top10TvWidget extends StatefulWidget {
@@ -252,7 +260,8 @@ class _Top10TVWidgetState extends State<Top10TvWidget> {
   final PageController _pageController = PageController(viewportFraction: 0.8);
   int _currentPage = 0;
 
-  void _onMovieTap(String title, String overview, String? image, int id ,String first_air_date) {
+  void _onMovieTap(String title, String overview, String? image, int id,
+      String first_air_date) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -260,8 +269,8 @@ class _Top10TVWidgetState extends State<Top10TvWidget> {
           original_name: title,
           overview: overview,
           image: image,
-          id: id, 
-          first_air_date: first_air_date, 
+          id: id,
+          first_air_date: first_air_date,
         ),
       ),
     );
@@ -300,7 +309,9 @@ class _Top10TVWidgetState extends State<Top10TvWidget> {
             },
             itemBuilder: (context, index) {
               Map<String, dynamic> movie = widget.topMovies![index];
-              return FullBoxWidget(
+              return Padding( // Wrap FullBoxWidget with Padding
+              padding: EdgeInsets.symmetric(horizontal: 8), // Adjust spacing as needed
+              child: FullBoxWidget(
                 name: movie['original_name'],
                 image: 'https://image.tmdb.org/t/p/w500${movie['backdrop_path']}',
                 onTap: () {
@@ -312,11 +323,12 @@ class _Top10TVWidgetState extends State<Top10TvWidget> {
                     movie['first_air_date'],
                   );
                 },
-              );
-            },
-          ),
+              ),
+            );
+          },
         ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
+}
 }

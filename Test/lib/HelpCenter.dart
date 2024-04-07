@@ -1,5 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:test/model/profile.dart';
 import 'package:test/search.dart';
 import 'component/drawer.dart';
@@ -15,11 +16,45 @@ class Help extends StatefulWidget {
     required this.profile,
     required this.info,
   }) : super(key: key);
+
   @override
   State<Help> createState() => _HelpState();
 }
 
 class _HelpState extends State<Help> {
+  TextEditingController _feedbackController = TextEditingController();
+
+  void _addFeedback() {
+  FirebaseFirestore.instance
+      .collection('Feedbacks')
+      .doc(widget.profile.email)
+      .set({
+    DateTime.now().millisecondsSinceEpoch.toString(): {
+      'issue': _feedbackController.text,
+      'report_date': FieldValue.serverTimestamp(),
+    }
+  }, SetOptions(merge: true)).then((_) {
+    Fluttertoast.showToast(
+      msg: 'We have collected your feedback, thank you',
+      gravity: ToastGravity.TOP,
+      textColor: Colors.white,
+      backgroundColor: Color(0xFFA04826),
+      timeInSecForIosWeb: 3,
+    );
+    _feedbackController.clear(); // Clear text field after sending feedback
+  }).catchError((error) {
+    Fluttertoast.showToast(
+      msg: 'Failed to collect feedback: $error',
+      gravity: ToastGravity.TOP,
+      textColor: Colors.white,
+      backgroundColor: Color(0xFFA04826),
+      timeInSecForIosWeb: 3,
+    );
+    print(error);
+  });
+}
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,10 +71,10 @@ class _HelpState extends State<Help> {
               image: DecorationImage(
                 image: AssetImage('assets/background.png'),
                 alignment: Alignment.topCenter,
-                fit: BoxFit.cover, // Ensure the image covers the entire container
+                fit: BoxFit.cover,
               ),
             ),
-            child: SizedBox(height: 350), // Adjust the height as needed
+            child: SizedBox(height: 350),
           ),
           Padding(
             padding: const EdgeInsets.all(35.0),
@@ -55,43 +90,48 @@ class _HelpState extends State<Help> {
                     fontFamily: 'EncodeSansCondensed',
                   ),
                 ),
-                SizedBox(height: 20), 
-            TextField(
-              decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(35),
-                    borderSide: BorderSide(color: Color(0xFFA04826)),
-                  ),
-                  suffixIcon: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Home(profile: widget.profile, info: widget.info)),
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                        child: Icon(Icons.search, color: Color(0xFFA04826)),
+                SizedBox(height: 20),
+                TextField(
+                  controller: _feedbackController,
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(35),
+                      borderSide: BorderSide(color: Color(0xFFA04826)),
                     ),
+                    suffixIcon: GestureDetector(
+                      onTap: () {
+                        if (_feedbackController.text.isNotEmpty) {
+                          _addFeedback();
+                        } else {
+                          Fluttertoast.showToast(
+                            msg: 'Please enter your feedback',
+                            gravity: ToastGravity.TOP,
+                            textColor: Colors.white,
+                            backgroundColor: Color(0xFFA04826),
+                            timeInSecForIosWeb: 3,
+                          );
+                        }
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Icon(Icons.send, color: Color(0xFFA04826)),
+                      ),
+                    ),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
                   ),
-                  contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                  style: TextStyle(color: Color(0xFFA04826)),
                 ),
-                onChanged: (value) {
-                  print('Problem report: $value');
-                },
-                style: TextStyle(color: Color(0xFFA04826)),
-              ),
-              SizedBox(height: 20),
-              Text(
-                'As soon as we found a solution, we will announce via email\nThank you !',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color(0xFFA04826),
-                  fontSize: 15.0,
-                  fontFamily: 'EncodeSansCondensed',
-                  fontWeight: FontWeight.bold
+                SizedBox(height: 20),
+                Text(
+                  'As soon as we find a solution, we will announce it via email.\nThank you!',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Color(0xFFA04826),
+                      fontSize: 15.0,
+                      fontFamily: 'EncodeSansCondensed',
+                      fontWeight: FontWeight.bold),
                 ),
-              ),
               ],
             ),
           ),

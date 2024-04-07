@@ -18,7 +18,7 @@ class MovieService {
       throw Exception('Failed to load movies');
     }
   }
- 
+
   Future<List<dynamic>> getPopularMovies() async {
     final response = await http.get(
       Uri.parse('$baseUrl/movie/popular?api_key=$apiKey'),
@@ -45,7 +45,7 @@ class MovieService {
       throw Exception('Failed to load random movies');
     }
   }
-     Future<List<dynamic>> getMoviesByLanguage(String language) async {
+    Future<List<dynamic>> getMoviesByLanguage(String language) async {
     String moviesByLanguageUrl = '$baseUrl/discover/movie?api_key=$apiKey&with_original_language=$language';
     final response = await http.get(Uri.parse(moviesByLanguageUrl));
 
@@ -59,7 +59,7 @@ class MovieService {
 
   Future<List<dynamic>> getRandomTVShows() async {
     final response = await http.get(
-     Uri.parse('$baseUrl/trending/tv/week?api_key=$apiKey'),
+      Uri.parse('$baseUrl/trending/tv/week?api_key=$apiKey'),
     );
 
     if (response.statusCode == 200) {
@@ -99,7 +99,7 @@ class MovieService {
 
   Future<List<dynamic>> getnewMovies() async {
     final response = await http.get(
-     Uri.parse('$baseUrl/movie/now_playing?api_key=$apiKey'),
+      Uri.parse('$baseUrl/movie/now_playing?api_key=$apiKey'),
     );
 
     if (response.statusCode == 200) {
@@ -112,7 +112,7 @@ class MovieService {
   }
   Future<List<dynamic>> getPopTv() async {
     final response = await http.get(
-     Uri.parse('$baseUrl/tv/popular?api_key=$apiKey'),
+      Uri.parse('$baseUrl/tv/popular?api_key=$apiKey'),
     );
 
     if (response.statusCode == 200) {
@@ -125,7 +125,7 @@ class MovieService {
   }
   Future<List<dynamic>> getAiringTv() async {
     final response = await http.get(
-     Uri.parse('$baseUrl/tv/airing_today?api_key=$apiKey'),
+      Uri.parse('$baseUrl/tv/airing_today?api_key=$apiKey'),
     );
 
     if (response.statusCode == 200) {
@@ -138,7 +138,7 @@ class MovieService {
   }
   Future<List<dynamic>> getOntheairTv() async {
     final response = await http.get(
-     Uri.parse('$baseUrl/tv/on_the_air?api_key=$apiKey'),
+      Uri.parse('$baseUrl/tv/on_the_air?api_key=$apiKey'),
     );
 
     if (response.statusCode == 200) {

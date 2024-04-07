@@ -83,19 +83,38 @@ class _HomePageState extends State<Home> {
                   return Column(
                 children: [
                   Align(
-                    child: Align(
-                      alignment: Alignment.topCenter,
-                      child: Container(
-                        color: Colors.transparent,
-                        child: Image.network(
-                          'https://image.tmdb.org/t/p/w500${movies?[3]['poster_path']}',
-                          width: double.infinity,
-                          height: 475,
-                          fit: BoxFit.fill,
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          child: Stack(
+                            children: [
+                              Container(
+                                color: Colors.transparent,
+                                child: Image.network(
+                                  'https://image.tmdb.org/t/p/w500${movies?[3]['poster_path']}',
+                                  width: double.infinity,
+                                  height: 555,
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                              Container(
+                                height: 555,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Colors.black.withOpacity(0.9),
+                                      Colors.transparent,
+                                      Colors.black.withOpacity(0.9),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ),
                   SizedBox(height: 20),
                   Align(
                     alignment: Alignment.centerLeft,
